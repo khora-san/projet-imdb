@@ -1,7 +1,8 @@
-package fr.diginamic.dto;
+package fr.diginamic;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.diginamic.dto.FilmDto;
 
 import java.io.IOException;
 import java.io.InputStream;

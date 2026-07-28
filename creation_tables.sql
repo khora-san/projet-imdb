@@ -48,7 +48,7 @@ CREATE TABLE FILM (
     titre VARCHAR(500) NOT NULL,
     annee_debut INT(10) NOT NULL,
     note DECIMAL(3,1) NULL,
-    resume TEXT NULL,
+    resume LONGTEXT NULL,
     langue_id BIGINT(20) NULL,
     pays_id BIGINT(20) NOT NULL,
     PRIMARY KEY (id),
