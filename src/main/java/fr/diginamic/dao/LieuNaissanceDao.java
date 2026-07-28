@@ -29,7 +29,7 @@ public class LieuNaissanceDao {
      * @param libelle le libellé du lieu de naissance
      * @return un Optional contenant le lieu de naissance trouvé, ou vide si aucun ne correspond
      */
-    public Optional<LieuNaissance> findByNom(String libelle) {
+    public Optional<LieuNaissance> findByLibelle(String libelle) {
         TypedQuery<LieuNaissance> query = em.createQuery(
                 "SELECT l FROM LieuNaissance l WHERE l.libelle = :libelle", LieuNaissance.class);
         query.setParameter("libelle", libelle);

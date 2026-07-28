@@ -1,10 +1,7 @@
 package fr.diginamic.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -18,6 +15,7 @@ public class Personne {
 
     @Id
     @Column(nullable = false, length = 15)
+    @Setter(AccessLevel.NONE)
     private String id;
 
     @Column(nullable = false, length = 255)
