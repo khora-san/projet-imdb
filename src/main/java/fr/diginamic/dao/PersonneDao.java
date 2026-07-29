@@ -2,7 +2,9 @@ package fr.diginamic.dao;
 
 import fr.diginamic.entities.Personne;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,4 +41,20 @@ public class PersonneDao {
     public void save(Personne personne) {
         em.persist(personne);
     }
+
+    /**
+     * Recherche une personne donnée par son identité.
+     *
+     * @param identite l'identité (Prénom Nom) de la personne
+     * @return la liste des Personnes portant cette identité
+     */
+    public List<Personne> findByIdentite(String identite) {
+        TypedQuery<Personne> query = em.createQuery(
+                "SELECT p FROM Personne p WHERE LOWER(p.identite) = LOWER(:identite)", Personne.class);
+        query.setParameter("identite", identite);
+        List<Personne> personneList = query.getResultList();
+        return personneList;
+    }
+
+
 }
