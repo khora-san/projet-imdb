@@ -55,6 +55,7 @@ public class ImportService {
         int compteurFilmsTraites = 0;
         int compteurNouveaux = 0;
         Set<String> idsTraites = new HashSet<>();
+        long debut = System.currentTimeMillis();
 
         for (FilmDto filmDto : films) {
             try {
@@ -71,7 +72,8 @@ public class ImportService {
                 System.err.println("Film concerné : " + filmDto.getId() + " " + filmDto.getNom());
             }
         }
-        System.out.println("Import terminé : " + compteurFilmsTraites + "/" + films.size() + " films traités.");
+        long dureeSecondes = (System.currentTimeMillis() - debut) / 1000;
+        System.out.println("Import terminé : " + compteurFilmsTraites + "/" + films.size() + " films traités en " + dureeSecondes + " secondes.");
         System.out.println(compteurNouveaux + " films ajoutés en base");
     }
 }
