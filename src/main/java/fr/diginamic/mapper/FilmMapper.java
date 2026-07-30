@@ -55,12 +55,17 @@ public class FilmMapper {
      *
      * @param dto le DTO contenant les données brutes du film
      * @return le Film trouvé ou nouvellement créé
+     * @throws IllegalArgumentException si le film n'a pas de pays renseigné dans le DTO
      */
     public Film findOrCreate(FilmDto dto) {
         Optional<Film> filmExistant = filmDao.findById(dto.getId());
         if (filmExistant.isPresent()) {
             return filmExistant.get();
         }
+        if (dto.getPays() == null) {
+            throw new IllegalArgumentException("Pays inconnu, film non importé.");
+        }
+
         Integer anneeDebut = parseAnneeSortie(dto.getAnneeSortie());
         BigDecimal note = parseRating(dto.getRating());
         String resume = ParsingUtils.nullIfBlank(dto.getPlot());
