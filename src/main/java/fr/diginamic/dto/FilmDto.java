@@ -7,6 +7,13 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Représente la structure brute d'un film telle qu'elle apparaît dans la source JSON,
+ * avant toute transformation en entité Film (effectuée par FilmMapper). Les champs
+ * correspondent directement aux clés du JSON — certains restent volontairement en
+ * String (comme rating ou anneeSortie) car leur parsing vers un type précis
+ * (BigDecimal, Integer...) est délégué au Mapper, pas géré ici.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter

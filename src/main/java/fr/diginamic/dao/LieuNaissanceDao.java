@@ -31,10 +31,10 @@ public class LieuNaissanceDao {
      */
     public Optional<LieuNaissance> findByLibelle(String libelle) {
         TypedQuery<LieuNaissance> query = em.createQuery(
-                "SELECT l FROM LieuNaissance l WHERE l.libelle = :libelle", LieuNaissance.class);
+                "SELECT l FROM LieuNaissance l WHERE LOWER(l.libelle) = LOWER(:libelle)", LieuNaissance.class);
         query.setParameter("libelle", libelle);
         List<LieuNaissance> lieuNaissanceList = query.getResultList();
-        return lieuNaissanceList.isEmpty() ? Optional.empty() : Optional.of(lieuNaissanceList.get(0));
+        return lieuNaissanceList.isEmpty() ? Optional.empty() : Optional.of(lieuNaissanceList.getFirst());
     }
 
     /**

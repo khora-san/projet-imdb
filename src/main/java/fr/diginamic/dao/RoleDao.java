@@ -62,7 +62,7 @@ public class RoleDao {
     }
 
     /**
-     * Recherche les films d'un acteur donné
+     * Recherche les films d'un·e acteur·ice donné·e
      * et sortis entre deux années données (bornes incluses).
      *
      * @param personne la Personne dont on veut filtrer les films
@@ -81,7 +81,7 @@ public class RoleDao {
     }
 
     /**
-     * Recherche les films dans lesquels deux acteurs donnés ont chacun un rôle.
+     * Recherche les films dans lesquels deux acteur·ice·s donné·e·s ont chacun un rôle.
      *
      * @param personne1 le premier acteur
      * @param personne2 le second acteur

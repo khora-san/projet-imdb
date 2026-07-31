@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Recherche un Film existant à partir de son id IMDB, ou le crée à partir d'un FilmDto
  * si aucun ne correspond, en résolvant au passage son pays, sa langue, ses genres,
- * ses réalisateurs et ses rôles (casting).
+ * ses réalisateur·ice·s et ses rôles (casting).
  */
 public class FilmMapper {
     private final FilmDao filmDao;
@@ -31,7 +31,7 @@ public class FilmMapper {
      * @param paysMapper     le mapper utilisé pour résoudre le pays associé
      * @param langueMapper   le mapper utilisé pour résoudre la langue associée
      * @param genreMapper    le mapper utilisé pour résoudre les genres associés
-     * @param personneMapper le mapper utilisé pour résoudre les réalisateurs et les acteurs
+     * @param personneMapper le mapper utilisé pour résoudre les réalisateur·ice·s et les acteur·ice·s
      * @param roleMapper     le mapper utilisé pour construire et sauvegarder les rôles associés
      */
     public FilmMapper(FilmDao filmDao, PaysMapper paysMapper, LangueMapper langueMapper, GenreMapper genreMapper, PersonneMapper personneMapper, RoleMapper roleMapper) {
@@ -47,7 +47,7 @@ public class FilmMapper {
      * Recherche un film existant par son id, ou en crée un nouveau à partir du DTO si aucun ne correspond.
      * <p>
      * Limitation connue : certains ids IMDB apparaissent plusieurs fois dans la source JSON
-     * (probablement un artefact de scraping, une occurrence par page de filmographie d'acteur visitée),
+     * (probablement un artefact de scraping, une occurrence par page de filmographie d'acteur·ice visitée),
      * avec un {@code anneeSortie} différent à chaque occurrence mais un casting identique.
      * Comme cette méthode retourne dès la première occurrence trouvée, seule l'année associée
      * à cette première occurrence est conservée ; elle peut ne pas correspondre à l'année de début
@@ -71,7 +71,7 @@ public class FilmMapper {
         String resume = ParsingUtils.nullIfBlank(dto.getPlot());
 
         String raw = ParsingUtils.nullIfBlank(dto.getLangue());
-        Langue langue = (raw == null) ? null : langueMapper.findOrCreate(raw);
+        Langue langue = (raw == null || raw.equalsIgnoreCase("None")) ? null : langueMapper.findOrCreate(raw);
 
         Pays pays = paysMapper.findOrCreate(dto.getPays().getNom());
 
@@ -86,6 +86,7 @@ public class FilmMapper {
 
     /**
      * Parse une note brute (format "x.x") en BigDecimal.
+     * Convertit la virgule ',' en '.'.
      * Retourne null si la chaîne est vide ou si le format ne peut pas être interprété
      *
      * @param raw la note brute telle qu'elle apparaît dans le JSON
@@ -96,6 +97,7 @@ public class FilmMapper {
         if (raw == null) {
             return null;
         }
+        raw = raw.replace(',', '.');
         try {
             return new BigDecimal(raw);
         } catch (NumberFormatException e) {

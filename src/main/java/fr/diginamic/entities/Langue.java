@@ -3,6 +3,9 @@ package fr.diginamic.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Représente une langue d'un film
+ */
 @Entity
 @Table(name = "LANGUE")
 @Getter

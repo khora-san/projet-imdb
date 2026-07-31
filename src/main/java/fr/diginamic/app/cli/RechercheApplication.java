@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * Point d'entrée de l'application de recherche : propose un menu interactif
+ * (via Scanner) permettant d'interroger la base de données déjà peuplée,
+ * à travers les 6 recherches prédéfinies (filmographie d'un·e acteur·ice, casting
+ * d'un film, films sur une période, films/acteur·ice·s communs, etc.).
+ */
 public class RechercheApplication {
     public static void main(String[] args) {
         EntityManager em = JpaUtil.getEntityManager();
@@ -28,19 +34,19 @@ public class RechercheApplication {
 
         while (true) {
             System.out.println("\n========= INTERNET MOVIE DATABASE ========");
-            System.out.println("1. Afficher la filmographie d'un acteur");
+            System.out.println("1. Afficher la filmographie d'un·e acteur·ice");
             System.out.println("2. Afficher le casting d'un film");
             System.out.println("3. Afficher les films sortis entre deux années");
-            System.out.println("4. Afficher les films communs à 2 acteurices");
-            System.out.println("5. Afficher les acteurs communs à 2 films");
-            System.out.println("6. Afficher les films sortis entre deux années avec un.e acteur.ice donné.e au casting");
+            System.out.println("4. Afficher les films communs à 2 acteur·ice·s");
+            System.out.println("5. Afficher les acteur·ice·s communs à 2 films");
+            System.out.println("6. Afficher les films sortis entre deux années avec un·e acteur·ice donné·e au casting");
             System.out.println("7. Quitter l'application");
             System.out.print("> ");
             choix = Integer.parseInt(scanner.nextLine());
             if (choix == 7) break;
 
             switch (choix) {
-                // Afficher la filmographie d'un acteur
+                // Afficher la filmographie d'un·e acteur·ice
                 case 1: {
                     Optional<Personne> acteurOpt = choisirActeur(scanner, rechercheService);
                     if (acteurOpt.isPresent()) {
@@ -57,8 +63,6 @@ public class RechercheApplication {
                                 System.out.println(role.getFilm().getTitre() + " (" + role.getFilm().getAnneeDebut() + ") : " + personnageAffiche);
                             }
                         }
-                    } else {
-                        System.out.println("Aucun acteur sélectionné.");
                     }
                 }
                 break;
@@ -79,8 +83,6 @@ public class RechercheApplication {
                                 System.out.println(role.getPersonne().getIdentite() + " (" + personnageAffiche + ")");
                             }
                         }
-                    } else {
-                        System.out.println("Aucun film sélectionné.");
                     }
                 }
                 break;
@@ -106,7 +108,7 @@ public class RechercheApplication {
 
                 }
                 break;
-                // Afficher les films communs à 2 acteurices
+                // Afficher les films communs à 2 acteur·ice·s
                 case 4: {
                     Optional<Personne> acteurOpt1 = choisirActeur(scanner, rechercheService);
                     Optional<Personne> acteurOpt2 = choisirActeur(scanner, rechercheService);
@@ -122,12 +124,10 @@ public class RechercheApplication {
                                 System.out.println(film.getTitre() + " (" + film.getAnneeDebut() + ")");
                             }
                         }
-                    } else {
-                        System.out.println("Au moins un des deux acteurices est introuvable");
                     }
                 }
                 break;
-                // Afficher les acteurs communs à 2 films
+                // Afficher les acteur·ice·s commun·e·s à 2 films
                 case 5: {
                     Optional<Film> filmOpt1 = choisirFilm(scanner, rechercheService);
                     Optional<Film> filmOpt2 = choisirFilm(scanner, rechercheService);
@@ -137,18 +137,16 @@ public class RechercheApplication {
                         List<Personne> acteursCommuns = rechercheService.rechercherActeursCommuns(film1, film2);
 
                         if (acteursCommuns.isEmpty()) {
-                            System.out.println("Aucun acteurice commun trouvé.");
+                            System.out.println("Aucun·e acteur·ice commun·e trouvé·e.");
                         } else {
                             for (Personne personne : acteursCommuns) {
                                 System.out.println(personne.getIdentite());
                             }
                         }
-                    } else {
-                        System.out.println("Au moins un des deux films est introuvable");
                     }
                 }
                 break;
-                // Afficher les films sortis entre deux années avec un.e acteur.ice donné.e au casting
+                // Afficher les films sortis entre deux années avec un·e acteur·ice donné·e au casting
                 case 6: {
                     Optional<Personne> acteurOpt = choisirActeur(scanner, rechercheService);
                     if (acteurOpt.isPresent()) {
@@ -163,14 +161,12 @@ public class RechercheApplication {
                         if (films.size() > 200) {
                             System.out.println(films.size() + " films trouvés — trop nombreux pour un affichage clair. Merci d'affiner la période.");
                         } else if (films.isEmpty()) {
-                            System.out.println("Aucun film trouvé pour cet acteurice sur cette période.");
+                            System.out.println("Aucun film trouvé pour cet·te acteur·ice sur cette période.");
                         } else {
                             for (Film film : films) {
                                 System.out.println(film.getTitre() + " (" + film.getAnneeDebut() + ")");
                             }
                         }
-                    } else {
-                        System.out.println("Acteurice introuvable.");
                     }
                 }
                 break;
@@ -183,23 +179,23 @@ public class RechercheApplication {
     }
 
     /**
-     * Demande à l'utilisateur un nom d'acteur, recherche les correspondances en base,
+     * Demande à l'utilisateur un nom d'acteur·ice, recherche les correspondances en base,
      * et fait choisir l'utilisateur parmi les homonymes éventuels via un sous-menu numéroté.
      *
      * @param scanner          le Scanner partagé utilisé pour lire la saisie utilisateur
-     * @param rechercheService le service utilisé pour rechercher les acteurs par nom
-     * @return un Optional contenant la Personne choisie, ou Optional.empty() si aucun acteur ne correspond au nom saisi
+     * @param rechercheService le service utilisé pour rechercher les acteur·ice·s par nom
+     * @return un Optional contenant la Personne choisie, ou Optional.empty() si aucun·e acteur·ice·s ne correspond au nom saisi
      */
     private static Optional<Personne> choisirActeur(Scanner scanner, RechercheService rechercheService) {
-        System.out.print("Nom de l'acteur : ");
+        System.out.print("Nom de l'acteur·ice : ");
         String nom = scanner.nextLine();
         List<Personne> personnes = rechercheService.rechercherActeursParNom(nom);
         if (personnes.isEmpty()) {
-            System.out.println("Le nom de l'acteur n'existe pas.");
+            System.out.println("Le nom de l'acteur·ice n'existe pas.");
             return Optional.empty();
         }
         if (personnes.size() == 1) {
-            return Optional.of(personnes.get(0));
+            return Optional.of(personnes.getFirst());
         } else {
             int i = 1;
             for (Personne personne : personnes) {
@@ -231,7 +227,7 @@ public class RechercheApplication {
             return Optional.empty();
         }
         if (films.size() == 1) {
-            return Optional.of(films.get(0));
+            return Optional.of(films.getFirst());
         } else {
             int i = 1;
             for (Film film : films) {

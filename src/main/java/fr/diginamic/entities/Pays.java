@@ -3,6 +3,9 @@ package fr.diginamic.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Représente un pays associé à un film
+ */
 @Entity
 @Table(name = "PAYS")
 @Getter

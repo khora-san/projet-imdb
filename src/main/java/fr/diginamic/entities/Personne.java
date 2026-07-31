@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ * Représente une personne et ses données (identité, date de naissance),
+ * ainsi que ses relations avec un lieu de naissance
+ */
 @Entity
 @Table(name = "PERSONNE")
 @Getter

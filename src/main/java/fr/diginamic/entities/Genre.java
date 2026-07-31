@@ -3,6 +3,9 @@ package fr.diginamic.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Représente un genre cinématographique
+ */
 @Entity
 @Table(name = "GENRE")
 @Getter

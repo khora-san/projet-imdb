@@ -61,7 +61,7 @@ public class FilmDao {
      *
      * @param min l'année de début de la période (incluse)
      * @param max l'année de fin de la période (incluse)
-     * @return la liste des Film dont l'année de sortie est comprise entre min et max
+     * @return la liste des Films dont l'année de sortie est comprise entre min et max
      */
     public List<Film> findBetween(Integer min, Integer max) {
         TypedQuery<Film> query = em.createQuery(

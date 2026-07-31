@@ -3,6 +3,10 @@ package fr.diginamic.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Représente un role via un personnage joué et un indicateur de casting principal,
+ * ainsi que ses liens avec un film et une personne (acteurice)
+ */
 @Entity
 @Table(name = "ROLE")
 @Getter

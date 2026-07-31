@@ -3,6 +3,9 @@ package fr.diginamic.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Représente le lieu de naissance d'une personne
+ */
 @Entity
 @Table(name = "LIEU_NAISSANCE")
 @Getter
