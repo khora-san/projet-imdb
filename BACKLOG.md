@@ -10,10 +10,14 @@ reporté par souci de rester dans le périmètre de la v1.
 - Vérification composite anti-duplication sur `Role` (combinaison film + personne + personnage), actuellement aucune
   protection contre la création de rôles en double
 
-## DTO / Tests
+## Tests, intégration continue et conteneurisation
 
-- `equals()`/`hashCode()`/`@AllArgsConstructor` sur les DTO — utiles principalement pour des tests unitaires, aucun test
-  unitaire prévu en v1
+- `equals()`/`hashCode()`/`@AllArgsConstructor` sur les DTO
+- Tests unitaires sur `RechercheService`/`ImportService`, DAO mockés, pour valider la logique métier indépendamment de la base
+- Tests d'intégration sur la couche DAO, pour valider que les requêtes JPQL renvoient bien les résultats attendus (base de test dédiée ou H2 en mémoire)
+- Intégration continue via GitHub Actions : build + exécution des tests à chaque push, pour détecter une régression avant merge sur `dev`/`main`
+- Conteneurisation de MariaDB via Docker/`docker-compose` (avec exécution automatique de `sql/schema.sql` au démarrage), pour se passer de XAMPP-Lite en local — alternative plus simple à la migration H2 déjà notée en Infrastructure, pour le même bénéfice de confort de développement
+- Piste plus avancée : Testcontainers pour les tests d'intégration, démarrant une vraie instance MariaDB éphémère en conteneur (plus fidèle qu'H2, isolé et reproductible en CI)
 
 ## Import (ImportService / FilmMapper)
 
