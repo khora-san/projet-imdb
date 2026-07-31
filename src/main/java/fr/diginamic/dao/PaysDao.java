@@ -31,7 +31,7 @@ public class PaysDao {
      */
     public Optional<Pays> findByNom(String nom) {
         TypedQuery<Pays> query = em.createQuery(
-                "SELECT p FROM Pays p WHERE p.nom = :nom", Pays.class);
+                "SELECT p FROM Pays p WHERE LOWER(p.nom) = LOWER(:nom)", Pays.class);
         query.setParameter("nom", nom);
         List<Pays> paysList = query.getResultList();
         return paysList.isEmpty() ? Optional.empty() : Optional.of(paysList.get(0));

@@ -31,7 +31,7 @@ public class GenreDao {
      */
     public Optional<Genre> findByNom(String nom) {
         TypedQuery<Genre> query = em.createQuery(
-                "SELECT g FROM Genre g WHERE g.nom = :nom", Genre.class);
+                "SELECT g FROM Genre g WHERE LOWER(g.nom) = LOWER(:nom)", Genre.class);
         query.setParameter("nom", nom);
         List<Genre> genreList = query.getResultList();
         return genreList.isEmpty() ? Optional.empty() : Optional.of(genreList.get(0));

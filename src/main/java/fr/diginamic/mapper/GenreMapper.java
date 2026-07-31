@@ -3,6 +3,8 @@ package fr.diginamic.mapper;
 import fr.diginamic.dao.GenreDao;
 import fr.diginamic.entities.Genre;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class GenreMapper {
 
     private final GenreDao genreDao;
+    private final Map<String, Genre> cache = new HashMap<>();
 
     /**
      * @param genreDao le DAO utilisé pour rechercher et sauvegarder les genres
@@ -27,16 +30,20 @@ public class GenreMapper {
      * @return le Genre trouvé ou nouvellement créé
      */
     public Genre findOrCreate(String nom) {
-
+        String cle = nom.toLowerCase();
+        Genre genre = cache.get(cle);
+        if (genre != null) {
+            return genre;
+        }
         Optional<Genre> genreExistant = genreDao.findByNom(nom);
         if (genreExistant.isPresent()) {
-            return genreExistant.get();
+            genre = genreExistant.get();
         } else {
-            Genre nouveauGenre = new Genre();
-            nouveauGenre.setNom(nom);
-            genreDao.save(nouveauGenre);
-            return nouveauGenre;
+            genre = new Genre();
+            genre.setNom(nom);
+            genreDao.save(genre);
         }
-
+        cache.put(cle, genre);
+        return genre;
     }
 }

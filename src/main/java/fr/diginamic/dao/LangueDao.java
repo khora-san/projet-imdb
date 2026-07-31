@@ -32,7 +32,7 @@ public class LangueDao {
      */
     public Optional<Langue> findByNom(String nom) {
         TypedQuery<Langue> query = em.createQuery(
-                "SELECT l FROM Langue l WHERE l.nom = :nom", Langue.class);
+                "SELECT l FROM Langue l WHERE LOWER(l.nom) = LOWER(:nom)", Langue.class);
         query.setParameter("nom", nom);
         List<Langue> langueList = query.getResultList();
         return langueList.isEmpty() ? Optional.empty() : Optional.of(langueList.get(0));

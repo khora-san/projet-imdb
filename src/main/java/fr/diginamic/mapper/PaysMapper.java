@@ -3,6 +3,8 @@ package fr.diginamic.mapper;
 import fr.diginamic.dao.PaysDao;
 import fr.diginamic.entities.Pays;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class PaysMapper {
 
     private final PaysDao paysDao;
+    private final Map<String, Pays> cache = new HashMap<>();
 
     /**
      * @param paysDao le DAO utilisé pour rechercher et sauvegarder les pays
@@ -27,16 +30,20 @@ public class PaysMapper {
      * @return le Pays trouvé ou nouvellement créé
      */
     public Pays findOrCreate(String nom) {
-
+        String cle = nom.toLowerCase();
+        Pays pays = cache.get(cle);
+        if (pays != null) {
+            return pays;
+        }
         Optional<Pays> paysExistant = paysDao.findByNom(nom);
         if (paysExistant.isPresent()) {
-            return paysExistant.get();
+            pays = paysExistant.get();
         } else {
-            Pays nouveauPays = new Pays();
-            nouveauPays.setNom(nom);
-            paysDao.save(nouveauPays);
-            return nouveauPays;
+            pays = new Pays();
+            pays.setNom(nom);
+            paysDao.save(pays);
         }
-
+        cache.put(cle, pays);
+        return pays;
     }
 }
